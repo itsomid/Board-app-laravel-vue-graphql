@@ -9,5 +9,14 @@ class Card extends Model
 {
     use HasFactory;
 
+    public function list()
+    {
+        $this->belongsTo(CardList::class,'list_id');
+    }
+
+    public function owner()
+    {
+        $this->belongsTo(User::class,'owner_id');
+    }
 
 }
