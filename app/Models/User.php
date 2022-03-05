@@ -42,5 +42,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function boards()
+    {
+        $this->hasMany(Board::class,'owner_id');
+    }
 
+    public function cards()
+    {
+        $this->hasMany(Card::class,'owner_id');
+    }
 }
