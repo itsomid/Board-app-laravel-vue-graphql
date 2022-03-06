@@ -11,12 +11,12 @@ class Card extends Model
 
     public function list()
     {
-        $this->belongsTo(CardList::class,'list_id');
+        return $this->belongsTo(CardList::class,'list_id');
     }
 
     public function owner()
     {
-        $this->belongsTo(User::class,'owner_id');
+        return $this->belongsTo(User::class,'owner_id');
     }
 
 }

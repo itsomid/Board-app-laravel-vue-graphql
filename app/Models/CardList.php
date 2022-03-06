@@ -11,11 +11,11 @@ class CardList extends Model
 
     public function board()
     {
-        $this->belongsTo(Board::class,'board_id');
+        return $this->belongsTo(Board::class,'board_id');
     }
 
     public function cards()
     {
-        $this->hasMany(Card::class,'list_id');
+        return $this->hasMany(Card::class,'list_id');
     }
 }
