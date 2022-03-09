@@ -17,6 +17,8 @@ type Query {
       "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
       name: String @where(operator: "like")
     ): [User!]! @paginate(defaultCount: 10)
+
+    board(id: ID! @eq): Board @find
 }
 
 "Account of a person who utilizes this application."
@@ -36,11 +38,13 @@ type User {
     "When the account was created."
     created_at: DateTime!
 
+    boards: [Board!]! @hasMany
+    cards: [Card!]! @hasMany
+
     "When the account was last updated."
     updated_at: DateTime!
 
-    boards: [Board!]! @hasMany
-    cards: [Card!]! @hasMany
+
 
 }
 
@@ -69,8 +73,10 @@ type Card {
 type CardList {
     id: ID!
     title: String!
-    board: Board! @belongTo
+    board: Board! @belongsTo
     cards: [Card!]! @hasMany
     created_at: DateTime!
     updated_at: DateTime!
 }
+
+

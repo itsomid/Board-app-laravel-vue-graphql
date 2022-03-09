@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
                    'Buy food',
                    'Paint a picture',
                    'Create a course'
-               ])->random(random_int(3,5))->each(function (string $task) use ($list,$order,$board){
+               ])->random(random_int(3,5))->each(function (string $task) use ($list,&$order,$board){
                     $list->cards()->save(
                         Card::make([
                             'title'=>$task,

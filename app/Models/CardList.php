@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CardList extends Model
 {
     use HasFactory;
-    protected $fillable = ['title','board_id '];
+    protected $fillable = ['title','board_id'];
     public function board()
     {
         return $this->belongsTo(Board::class,'board_id');
