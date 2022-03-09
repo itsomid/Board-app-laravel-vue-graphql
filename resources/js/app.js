@@ -1,4 +1,5 @@
 
+import 'bootstrap'
 import Vue from 'vue'
 import Board from "./Board";
 import apolloProvider from './apollo.config'

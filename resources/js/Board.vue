@@ -18,23 +18,46 @@
         </div>
         <div class="h-full flex flex-1 flex-col items-stretch">
             <div class="mx-4 mb-2 text-white font-bold text-lg">
-                <span >Loading...</span>
-                <span ></span>
+                <span v-if="$apollo.queries.board.loading">Loading...</span>
+                <span v-else>{{ board.title }}</span>
             </div>
-            <div class="flex flex-1 items-start overflow-x-auto mx-2" >
-                <List></List>
-                <List></List>
-                <List></List>
-
+            <div class="flex flex-1 items-start overflow-x-auto mx-2" v-if="board">
+                <List :list="list" v-for="list in board.lists" :key="list.id"></List>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import List from "./components/List"
+
 export default {
-    components: {List}
+    components: {List},
+    apollo: {
+        board: {
+            query: gql`
+               query($id: ID!) {
+                  board(id: $id) {
+                    title
+                    color
+                    lists{
+                      id
+                      title
+                      cards{
+                        id
+                        title
+                        order
+                      }
+                    }
+                  }
+                }
+            `,
+            variables:{
+                id: 1
+            }
+        }
+    }
 }
 
 
