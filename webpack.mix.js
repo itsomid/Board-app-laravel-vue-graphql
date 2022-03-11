@@ -10,9 +10,28 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+mix.extend('graphql',
+    new class {
+        register(val) {
+            console.log('mix.foo() was called with ' + val);
+        }
+        dependencies() {
+            return ['graphql','graphql-tag']
+        }
+        webpackRules() {
+            return {
+                test: /\.(graphql|gql)$/,
+                exclude: /node_module/,
+                loader: 'graphql-tag/loader'
+            }
+        }
+    }()
+);
+
 
 mix.js('resources/js/app.js', 'public/js')
     .vue()
     .postCss('resources/css/app.css', 'public/css',[
         require("tailwindcss"),
     ]);
+mix.graphql();
