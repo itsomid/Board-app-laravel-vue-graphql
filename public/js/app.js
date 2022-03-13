@@ -10929,8 +10929,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "CardEditor"
+  name: "CardEditor",
+  mounted: function mounted() {
+    this.$refs.card.focus();
+  }
 });
 
 /***/ }),
@@ -10971,6 +10977,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     list: Object
+  },
+  data: function data() {
+    return {
+      editing: false
+    };
   }
 });
 
@@ -21150,7 +21161,11 @@ var render = function () {
     {
       staticClass:
         "rounded-sm p-2 text-gray-600 cursor-pointer hover:bg-gray-400 hover:text-gray-800 text-sm",
-      on: { click: _vm.addCard },
+      on: {
+        click: function ($event) {
+          return _vm.$emit("openEditor")
+        },
+      },
     },
     [_vm._v("Add new card\n")]
   )
@@ -21178,22 +21193,38 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("textarea", {
+      ref: "card",
+      staticClass:
+        "rounded-md py-1 px-2 outline-none w-full text-gray-900 text-sm bg-white h-16 resize-none",
+      attrs: { placeholder: "Enter a title for this card..." },
+      on: {
+        keyup: [
+          function ($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "esc", 27, $event.key, ["Esc", "Escape"])
+            ) {
+              return null
+            }
+            return _vm.$emit("closeEditor")
+          },
+          function ($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            return _vm.$emit("closeEditor")
+          },
+        ],
+      },
+    }),
+  ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("textarea", {
-        staticClass:
-          "rounded-md py-1 px-2 outline-none w-full text-gray-900 text-sm bg-white h-16 resize-none",
-        attrs: { placeholder: "Enter a title for this card..." },
-      }),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -21230,9 +21261,21 @@ var render = function () {
         return _c("Card", { key: card.id, attrs: { card: card } })
       }),
       _vm._v(" "),
-      _c("CardEditor"),
-      _vm._v(" "),
-      _c("CardAddButton"),
+      _vm.editing
+        ? _c("CardEditor", {
+            on: {
+              closeEditor: function ($event) {
+                _vm.editing = false
+              },
+            },
+          })
+        : _c("CardAddButton", {
+            on: {
+              openEditor: function ($event) {
+                _vm.editing = true
+              },
+            },
+          }),
     ],
     2
   )

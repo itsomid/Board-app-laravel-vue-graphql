@@ -4,8 +4,8 @@
             <div class="text-gray-800 pl-2 pb-2 font-bold">{{list.title}}</div>
         </div>
         <Card :card="card" v-for="card in list.cards" :key="card.id"></Card>
-        <CardEditor></CardEditor>
-        <CardAddButton></CardAddButton>
+        <CardEditor v-if="editing" @closeEditor="editing = false"></CardEditor>
+        <CardAddButton v-else @openEditor="editing = true"></CardAddButton>
     </div>
 </template>
 
@@ -18,6 +18,11 @@ export default {
     components: {CardEditor, Card, CardAddButton},
     props: {
         list: Object
+    },
+    data(){
+        return{
+            editing: false
+        }
     }
 
 };
