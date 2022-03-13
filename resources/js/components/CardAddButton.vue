@@ -7,15 +7,26 @@
 </template>
 <script>
 import CardAdd from './../graphql/CardAdd.gql'
+import BoardQuery from './../graphql/BoardWithListsAndCards.gql';
+
 export default {
-    methods:{
-        addCard(){
+    methods: {
+        addCard() {
             this.$apollo.mutate({
                 mutation: CardAdd,
                 variables: {
                     title: 'Added through mutation',
                     order: 4,
                     listId: 1
+                },
+                update: (store, {data: {cardAdd}}) => {
+                    const data = store.readQuery({
+                        query: BoardQuery,
+                        variables: {id: 1}
+                    })
+                    console.log(data.board.lists)
+                    data.board.lists.find(list => list.id === '1').cards.push(cardAdd)
+                    store.writeQuery({query:BoardQuery, data})
                 }
             })
         }

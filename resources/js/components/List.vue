@@ -3,9 +3,8 @@
         <div class="flex justify-between">
             <div class="text-gray-800 pl-2 pb-2 font-bold">{{list.title}}</div>
         </div>
-
         <Card :card="card" v-for="card in list.cards" :key="card.id"></Card>
-
+        <CardEditor></CardEditor>
         <CardAddButton></CardAddButton>
     </div>
 </template>
@@ -13,10 +12,10 @@
 <script>
 import Card from "./Card";
 import CardAddButton from "./CardAddButton";
-
+import CardEditor from "./CardEditor";
 
 export default {
-    components: {Card, CardAddButton},
+    components: {CardEditor, Card, CardAddButton},
     props: {
         list: Object
     }
