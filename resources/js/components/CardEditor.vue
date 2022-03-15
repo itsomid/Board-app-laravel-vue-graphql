@@ -4,17 +4,63 @@
            class="rounded-md py-1 px-2 outline-none w-full text-gray-900 text-sm bg-white h-16 resize-none"
            placeholder="Enter a title for this card..."
            ref="card"
-           @keyup.esc="$emit('closeEditor')"
-           @keyup.enter="$emit('closeEditor')"
+           @keyup.esc="closeEditor"
+           @keyup.enter="addCard"
+           v-model="title"
        ></textarea>
+        <div class="flex">
+            <button class="rounded-sm py-1 px-3 bg-indigo-700 text-white hover:bg-indigo-600 cursor-pointer mr-1"
+                    @click="addCard">Add Card
+            </button>
+            <button class="rounded-sm py-1 px-3 hover:bg-gray-400 text-gray-500  cursor-pointer" @click="closeEditor">
+                Cancel
+            </button>
+        </div>
     </div>
 </template>
 
 <script>
+import CardAdd from "../graphql/CardAdd.gql";
+import BoardQuery from "../graphql/BoardWithListsAndCards.gql";
+
 export default {
     name: "CardEditor",
+    props: {
+        list: Object
+    },
+    data(){
+        return{
+           title: ''
+        }
+    },
     mounted() {
         this.$refs.card.focus()
+        console.log(this.list.id)
+    },
+    methods: {
+        addCard() {
+            this.$apollo.mutate({
+                mutation: CardAdd,
+                variables: {
+                    title: this.title,
+                    order: this.list.cards.length + 1,
+                    listId: this.list.id
+                },
+                update: (store, {data: {cardAdd}}) => {
+                    const data = store.readQuery({
+                        query: BoardQuery,
+                        variables: {id: Number(this.list.board_id)}
+                    })
+                    console.log(data.board.lists)
+                    data.board.lists.find(list => list.id === this.list.id).cards.push(cardAdd)
+                    store.writeQuery({query: BoardQuery, data})
+                }
+            })
+            this.$emit('closeEditor')
+        },
+        closeEditor() {
+            this.$emit('closeEditor')
+        }
     }
 }
 </script>

@@ -77,6 +77,7 @@ type CardList {
     title: String!
     board: Board! @belongsTo
     cards: [Card!]! @hasMany
+    board_id: ID!
     created_at: DateTime!
     updated_at: DateTime!
 }
