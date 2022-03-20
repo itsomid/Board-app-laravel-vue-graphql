@@ -28,14 +28,14 @@ export default {
     props: {
         list: Object
     },
-    data(){
-        return{
-           title: ''
+    data() {
+        return {
+            title: ''
         }
     },
     mounted() {
         this.$refs.card.focus()
-        console.log(this.list.id)
+        // console.log(this.list.id)
     },
     methods: {
         addCard() {
@@ -47,16 +47,13 @@ export default {
                     listId: this.list.id
                 },
                 update: (store, {data: {cardAdd}}) => {
-                    const data = store.readQuery({
-                        query: BoardQuery,
-                        variables: {id: Number(this.list.board_id)}
-                    })
-                    console.log(data.board.lists)
-                    data.board.lists.find(list => list.id === this.list.id).cards.push(cardAdd)
-                    store.writeQuery({query: BoardQuery, data})
+
+                    this.$emit("added", {store, data: cardAdd})
+
+                    this.closeEditor()
                 }
             })
-            this.$emit('closeEditor')
+
         },
         closeEditor() {
             this.$emit('closeEditor')

@@ -1,10 +1,14 @@
 <template>
     <div class="bg-gray-300 rounded-sm p-2 mr-2 list">
         <div class="flex justify-between">
-            <div class="text-gray-800 pl-2 pb-2 font-bold">{{list.title}}</div>
+            <div class="text-gray-800 pl-2 pb-2 font-bold">{{ list.title }}</div>
         </div>
         <Card :card="card" v-for="card in list.cards" :key="card.id"></Card>
-        <CardEditor v-if="editing" @closeEditor="editing = false" :list="list"></CardEditor>
+        <CardEditor
+            v-if="editing" @closeEditor="editing = false"
+            :list="list"
+            @added="$emit('card-added',{...$event,listId: list.id})"
+        ></CardEditor>
         <CardAddButton v-else @openEditor="editing = true"></CardAddButton>
     </div>
 </template>
@@ -19,8 +23,8 @@ export default {
     props: {
         list: Object
     },
-    data(){
-        return{
+    data() {
+        return {
             editing: false
         }
     }

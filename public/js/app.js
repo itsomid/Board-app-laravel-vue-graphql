@@ -10800,6 +10800,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -10812,6 +10815,24 @@ __webpack_require__.r(__webpack_exports__);
       variables: {
         id: 1
       }
+    }
+  },
+  methods: {
+    updateQueryCache: function updateQueryCache(event) {
+      var data = event.store.readQuery({
+        query: (_graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default()),
+        variables: {
+          id: Number(this.board.id)
+        }
+      }); // console.log(data.board.lists)
+
+      data.board.lists.find(function (list) {
+        return list.id === event.listId;
+      }).cards.push(event.data);
+      event.store.writeQuery({
+        query: (_graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default()),
+        data: data
+      });
     }
   }
 });
@@ -10929,8 +10950,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.$refs.card.focus();
-    console.log(this.list.id);
+    this.$refs.card.focus(); // console.log(this.list.id)
   },
   methods: {
     addCard: function addCard() {
@@ -10945,23 +10965,15 @@ __webpack_require__.r(__webpack_exports__);
         },
         update: function update(store, _ref) {
           var cardAdd = _ref.data.cardAdd;
-          var data = store.readQuery({
-            query: (_graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default()),
-            variables: {
-              id: Number(_this.list.board_id)
-            }
+
+          _this.$emit("added", {
+            store: store,
+            data: cardAdd
           });
-          console.log(data.board.lists);
-          data.board.lists.find(function (list) {
-            return list.id === _this.list.id;
-          }).cards.push(cardAdd);
-          store.writeQuery({
-            query: (_graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default()),
-            data: data
-          });
+
+          _this.closeEditor();
         }
       });
-      this.$emit('closeEditor');
     },
     closeEditor: function closeEditor() {
       this.$emit('closeEditor');
@@ -10985,6 +10997,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Card__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Card */ "./resources/js/components/Card.vue");
 /* harmony import */ var _CardAddButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CardAddButton */ "./resources/js/components/CardAddButton.vue");
 /* harmony import */ var _CardEditor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CardEditor */ "./resources/js/components/CardEditor.vue");
+//
+//
+//
+//
 //
 //
 //
@@ -16439,8 +16455,8 @@ gql["default"] = gql;
 /***/ ((module) => {
 
 
-    var doc = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"BoardWithListsAndCards"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"board"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"color"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"lists"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"board_id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"cards"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"order"},"arguments":[],"directives":[]}]}}]}}]}}]}}],"loc":{"start":0,"end":273}};
-    doc.loc.source = {"body":"query BoardWithListsAndCards($id: ID!) {\n    board(id: $id) {\n        title\n        color\n        lists{\n            id\n            title\n            board_id\n            cards{\n                id\n                title\n                order\n            }\n        }\n    }\n}\n","name":"GraphQL request","locationOffset":{"line":1,"column":1}};
+    var doc = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"BoardWithListsAndCards"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"board"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"color"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"lists"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"board_id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"cards"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"order"},"arguments":[],"directives":[]}]}}]}}]}}]}}],"loc":{"start":0,"end":284}};
+    doc.loc.source = {"body":"query BoardWithListsAndCards($id: ID!) {\n    board(id: $id) {\n        id\n        title\n        color\n        lists{\n            id\n            title\n            board_id\n            cards{\n                id\n                title\n                order\n            }\n        }\n    }\n}\n","name":"GraphQL request","locationOffset":{"line":1,"column":1}};
   
 
     var names = {};
@@ -21200,7 +21216,15 @@ var render = function () {
               "div",
               { staticClass: "flex flex-1 items-start overflow-x-auto mx-2" },
               _vm._l(_vm.board.lists, function (list) {
-                return _c("List", { key: list.id, attrs: { list: list } })
+                return _c("List", {
+                  key: list.id,
+                  attrs: { list: list },
+                  on: {
+                    "card-added": function ($event) {
+                      return _vm.updateQueryCache($event)
+                    },
+                  },
+                })
               }),
               1
             )
@@ -21475,6 +21499,12 @@ var render = function () {
             on: {
               closeEditor: function ($event) {
                 _vm.editing = false
+              },
+              added: function ($event) {
+                return _vm.$emit(
+                  "card-added",
+                  Object.assign({}, $event, { listId: _vm.list.id })
+                )
               },
             },
           })
