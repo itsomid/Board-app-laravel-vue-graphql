@@ -10770,6 +10770,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_List__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/List */ "./resources/js/components/List.vue");
 /* harmony import */ var _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphql/BoardWithListsAndCards.gql */ "./resources/js/graphql/BoardWithListsAndCards.gql");
 /* harmony import */ var _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constants */ "./resources/js/constants.js");
 //
 //
 //
@@ -10803,6 +10804,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -10824,11 +10829,26 @@ __webpack_require__.r(__webpack_exports__);
         variables: {
           id: Number(this.board.id)
         }
-      }); // console.log(data.board.lists)
+      });
 
-      data.board.lists.find(function (list) {
-        return list.id === event.listId;
-      }).cards.push(event.data);
+      var listById = function listById() {
+        return data.board.lists.find(function (list) {
+          return list.id === event.listId;
+        });
+      };
+
+      switch (event.type) {
+        case _constants__WEBPACK_IMPORTED_MODULE_2__.EVENT_CARD_ADDED:
+          listById().cards.push(event.data);
+          break;
+
+        case _constants__WEBPACK_IMPORTED_MODULE_2__.EVENT_CARD_DELETED:
+          listById().cards = listById().cards.filter(function (card) {
+            return card.id !== event.data.id;
+          });
+          break;
+      }
+
       event.store.writeQuery({
         query: (_graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default()),
         data: data
@@ -10852,6 +10872,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _graphql_cardDelete_gql__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../graphql/cardDelete.gql */ "./resources/js/graphql/cardDelete.gql");
 /* harmony import */ var _graphql_cardDelete_gql__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_graphql_cardDelete_gql__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./resources/js/constants.js");
 //
 //
 //
@@ -10867,16 +10888,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     card: Object
   },
   methods: {
     cardDelete: function cardDelete() {
+      var _this = this;
+
       this.$apollo.mutate({
         mutation: (_graphql_cardDelete_gql__WEBPACK_IMPORTED_MODULE_0___default()),
         variables: {
           id: this.card.id
+        },
+        update: function update(store, _ref) {
+          var cardDelete = _ref.data.cardDelete;
+
+          _this.$emit('deleted', {
+            store: store,
+            data: cardDelete,
+            type: _constants__WEBPACK_IMPORTED_MODULE_1__.EVENT_CARD_DELETED
+          });
         }
       });
     }
@@ -10914,8 +10947,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _graphql_CardAdd_gql__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../graphql/CardAdd.gql */ "./resources/js/graphql/CardAdd.gql");
 /* harmony import */ var _graphql_CardAdd_gql__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_graphql_CardAdd_gql__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../graphql/BoardWithListsAndCards.gql */ "./resources/js/graphql/BoardWithListsAndCards.gql");
-/* harmony import */ var _graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_graphql_BoardWithListsAndCards_gql__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants */ "./resources/js/constants.js");
 //
 //
 //
@@ -10968,7 +11000,8 @@ __webpack_require__.r(__webpack_exports__);
 
           _this.$emit("added", {
             store: store,
-            data: cardAdd
+            data: cardAdd,
+            type: _constants__WEBPACK_IMPORTED_MODULE_1__.EVENT_CARD_ADDED
           });
 
           _this.closeEditor();
@@ -10997,6 +11030,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Card__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Card */ "./resources/js/components/Card.vue");
 /* harmony import */ var _CardAddButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CardAddButton */ "./resources/js/components/CardAddButton.vue");
 /* harmony import */ var _CardEditor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CardEditor */ "./resources/js/components/CardEditor.vue");
+//
+//
+//
+//
 //
 //
 //
@@ -11082,6 +11119,23 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_3__["default"]({
   el: '#app',
   apolloProvider: _apollo_config__WEBPACK_IMPORTED_MODULE_2__["default"]
 });
+
+/***/ }),
+
+/***/ "./resources/js/constants.js":
+/*!***********************************!*\
+  !*** ./resources/js/constants.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "EVENT_CARD_ADDED": () => (/* binding */ EVENT_CARD_ADDED),
+/* harmony export */   "EVENT_CARD_DELETED": () => (/* binding */ EVENT_CARD_DELETED)
+/* harmony export */ });
+var EVENT_CARD_ADDED = 'EVENT_CARD_ADDED';
+var EVENT_CARD_DELETED = 'EVENT_CARD_DELETED';
 
 /***/ }),
 
@@ -21223,6 +21277,9 @@ var render = function () {
                     "card-added": function ($event) {
                       return _vm.updateQueryCache($event)
                     },
+                    "card-deleted": function ($event) {
+                      return _vm.updateQueryCache($event)
+                    },
                   },
                 })
               }),
@@ -21490,7 +21547,18 @@ var render = function () {
       ]),
       _vm._v(" "),
       _vm._l(_vm.list.cards, function (card) {
-        return _c("Card", { key: card.id, attrs: { card: card } })
+        return _c("Card", {
+          key: card.id,
+          attrs: { card: card },
+          on: {
+            deleted: function ($event) {
+              return _vm.$emit(
+                "card-deleted",
+                Object.assign({}, $event, { listId: _vm.list.id })
+              )
+            },
+          },
+        })
       }),
       _vm._v(" "),
       _vm.editing

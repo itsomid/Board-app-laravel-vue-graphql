@@ -21,8 +21,8 @@
 
 <script>
 import CardAdd from "../graphql/CardAdd.gql";
-import BoardQuery from "../graphql/BoardWithListsAndCards.gql";
 
+import {EVENT_CARD_ADDED} from "../constants";
 export default {
     name: "CardEditor",
     props: {
@@ -48,7 +48,7 @@ export default {
                 },
                 update: (store, {data: {cardAdd}}) => {
 
-                    this.$emit("added", {store, data: cardAdd})
+                    this.$emit("added", {store, data: cardAdd, type: EVENT_CARD_ADDED})
 
                     this.closeEditor()
                 }

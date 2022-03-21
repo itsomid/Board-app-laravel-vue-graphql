@@ -3,9 +3,13 @@
         <div class="flex justify-between">
             <div class="text-gray-800 pl-2 pb-2 font-bold">{{ list.title }}</div>
         </div>
-        <Card :card="card" v-for="card in list.cards" :key="card.id"></Card>
+        <Card
+            :card="card" v-for="card in list.cards"
+            :key="card.id"
+            @deleted="$emit('card-deleted',{...$event, listId: list.id})"></Card>
         <CardEditor
-            v-if="editing" @closeEditor="editing = false"
+            v-if="editing"
+            @closeEditor="editing = false"
             :list="list"
             @added="$emit('card-added',{...$event,listId: list.id})"
         ></CardEditor>
