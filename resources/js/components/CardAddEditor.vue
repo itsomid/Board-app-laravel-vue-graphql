@@ -1,13 +1,46 @@
 <template>
-
+    <CardEditor v-model="title" @closed="closeEditor" @saved="addCard"></CardEditor>
 </template>
 
 <script>
+import CardAdd from "../graphql/CardAdd.gql";
+import CardEditor from "./CardEditor";
+import {EVENT_CARD_ADDED} from "../constants";
+
 export default {
-    name: "CardAddEditor"
+    components: {CardEditor},
+    props: {
+        list: Object
+    },
+    data() {
+        return {
+            title: null
+        }
+    },
+    mounted() {
+    },
+    methods: {
+        addCard() {
+            this.$apollo.mutate({
+                mutation: CardAdd,
+                variables: {
+                    title: this.title,
+                    order: this.list.cards.length + 1,
+                    listId: this.list.id
+                },
+                update: (store, {data: {cardAdd}}) => {
+
+                    this.$emit("added", {store, data: cardAdd, type: EVENT_CARD_ADDED})
+
+                    this.closeEditor()
+                }
+            })
+
+        },
+        closeEditor() {
+            this.$emit('closeEditor')
+        }
+    }
 }
 </script>
 
-<style scoped>
-
-</style>

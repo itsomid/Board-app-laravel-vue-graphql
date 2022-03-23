@@ -7,12 +7,12 @@
             :card="card" v-for="card in list.cards"
             :key="card.id"
             @deleted="$emit('card-deleted',{...$event, listId: list.id})"></Card>
-        <CardEditor
+        <CardAddEditor
             v-if="editing"
             @closeEditor="editing = false"
             :list="list"
             @added="$emit('card-added',{...$event,listId: list.id})"
-        ></CardEditor>
+        ></CardAddEditor>
         <CardAddButton v-else @openEditor="editing = true"></CardAddButton>
     </div>
 </template>
@@ -20,10 +20,10 @@
 <script>
 import Card from "./Card";
 import CardAddButton from "./CardAddButton";
-import CardEditor from "./CardEditor";
+import CardAddEditor from "./CardAddEditor";
 
 export default {
-    components: {CardEditor, Card, CardAddButton},
+    components: {CardAddEditor, Card, CardAddButton},
     props: {
         list: Object
     },
