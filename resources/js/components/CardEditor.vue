@@ -6,14 +6,17 @@
            ref="card"
            @keyup.esc="closed"
            @keyup.enter="saved"
-           :value="modelValue"
+           :value="value"
            @input="$emit('input',$event.target.value)"
        ></textarea>
         <div class="flex">
-            <button class="rounded-sm py-1 px-3 bg-indigo-700 text-white hover:bg-indigo-600 cursor-pointer mr-1"
-                    @click="saved">Save Card
+            <button
+                class="rounded-sm py-1 px-3 bg-indigo-700 text-white hover:bg-indigo-600 cursor-pointer mr-1"
+                @click="saved">{{ label }}
             </button>
-            <button class="rounded-sm py-1 px-3 hover:bg-gray-400 text-gray-500  cursor-pointer" @click="closed">
+            <button
+                class="rounded-sm py-1 px-3 hover:bg-gray-400 text-gray-500  cursor-pointer"
+                @click="closed">
                 Cancel
             </button>
         </div>
@@ -23,7 +26,7 @@
 <script>
 
 export default {
-    props: ['modelValue'],
+    props: ["value", "label"],
     mounted() {
         this.$refs.card.focus()
     },

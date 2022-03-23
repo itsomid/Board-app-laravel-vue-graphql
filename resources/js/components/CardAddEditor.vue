@@ -1,5 +1,5 @@
 <template>
-    <CardEditor v-model="title" @closed="closeEditor" @saved="addCard"></CardEditor>
+    <CardEditor v-model="title" @closed="closeEditor" @saved="addCard" label="Add Card"></CardEditor>
 </template>
 
 <script>
@@ -16,8 +16,6 @@ export default {
         return {
             title: null
         }
-    },
-    mounted() {
     },
     methods: {
         addCard() {
