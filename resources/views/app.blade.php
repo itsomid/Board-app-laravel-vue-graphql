@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{config('app.name','Board-app')}}</title>
     <link rel="stylesheet" href="{{mix('css/app.css')}}">
-    <script src="{{mix('js/app.js')}}" defer></script>
+
 </head>
 <body class="h-screen text-gray-800">
     <div id="app" class="h-full">
-        <Board></Board>
+        <router-view></router-view>
     </div>
+    <script src="{{mix('js/app.js')}}" defer></script>
 </body>
 </html>
-
