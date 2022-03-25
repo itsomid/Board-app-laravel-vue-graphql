@@ -23,7 +23,10 @@
                 </form>
                 <div class="bg-gray-400 h-px w-full mb-6"></div>
                 <div class="text-center text-sm">
-                    <a href="/register" class="text-blue-600 hover:underline">Sign up for an account</a>
+                    <router-link
+                        :to="{name: 'register'}"
+                        class="text-blue-600 hover:underline">
+                        Sign up for an account</router-link>
                 </div>
             </div>
         </div>

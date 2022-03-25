@@ -29,7 +29,7 @@
                 </form>
                 <div class="bg-gray-400 h-px w-full mb-6"></div>
                 <div class="text-center text-sm">
-                    <a href="/login" class="text-blue-600 hover:underline">Already have an account? Log In</a>
+                    <router-link :to="{name: 'login'}" class="text-blue-600 hover:underline">Already have an account? Log In</router-link>
                 </div>
             </div>
         </div>
