@@ -9252,7 +9252,11 @@ var apolloClient = new apollo_boost__WEBPACK_IMPORTED_MODULE_2__["default"]({
   uri: 'http://127.0.0.1:8000/graphql'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vue_apollo__WEBPACK_IMPORTED_MODULE_0__["default"]({
-  defaultClient: apolloClient
+  defaultClient: apolloClient,
+  headers: {
+    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+  },
+  credentials: 'include'
 })); // module.exports = apolloClient;
 
 /***/ }),
