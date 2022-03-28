@@ -29,8 +29,8 @@
             endpoint: "{{url(config('graphql-playground.endpoint'))}}",
             subscriptionEndpoint: "{{config('graphql-playground.subscriptionEndpoint')}}",
             settings: {
-                'request.credentials': 'same-origin',
-                // "request.credentials": "include"
+                // 'request.credentials': 'same-origin',
+                "request.credentials": "include"
             },
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
