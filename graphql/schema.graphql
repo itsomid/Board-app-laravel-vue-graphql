@@ -25,6 +25,9 @@ type Mutation {
     cardAdd(input: CreatCardInput! @spread): Card! @create
     cardDelete(id: ID!): Card! @delete
     cardUpdate(id: ID!, title: String): Card @update
+
+    login(email: String!, password: String!): User!
+    logout: User @guard
 }
 
 "Account of a person who utilizes this application."
