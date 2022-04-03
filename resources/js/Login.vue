@@ -4,7 +4,12 @@
             <div class="text-3xl text-blue-700 font-bold mb-10">
                 <span>Board App</span>
             </div>
-            <div class="w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-10"><!---->
+            <div class="w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-10">
+                <div v-if="errors.length" class="mb-3 p-2 bg-red-600 text-gray-100 rounded-sm text-sm text-center ">
+                    <div v-for="(error,index) in errors" :key="index">
+                        {{ error.message }}
+                    </div>
+                </div>
                 <div class="w-full text-center text-gray-600 font-bold mb-8">Log in to Board App</div>
                 <form @submit.prevent="authenticate" autocomplete="off">
                     <div class="w-full mb-4">
@@ -48,33 +53,31 @@
 
 <script>
 import Login from './graphql/Login.gql'
+import {gqlErrors} from "./utils";
 
 export default {
     name: "Login",
     data() {
         return {
             email: null,
-            password: null
+            password: null,
+            errors: []
         }
     },
-    mounted() {
-        this.email = null
-    },
     methods: {
-       async authenticate() {
-           try{
-               await this.$apollo.mutate({
-                   mutation: Login,
-                   variables: {
-                       email: this.email,
-                       password: this.password
-                   }
-               })
-           }catch (err){
-               console.log(err)
-           }
-           console.log('Hi')
-
+        async authenticate() {
+            try {
+                await this.$apollo.mutate({
+                    mutation: Login,
+                    variables: {
+                        email: this.email,
+                        password: this.password
+                    }
+                })
+            } catch (err) {
+                console.log(gqlErrors(err))
+                this.errors = gqlErrors(err)
+            }
         }
     }
 }

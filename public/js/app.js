@@ -8856,6 +8856,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _graphql_Login_gql__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphql/Login.gql */ "./resources/js/graphql/Login.gql");
 /* harmony import */ var _graphql_Login_gql__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_graphql_Login_gql__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "./resources/js/utils.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -8910,17 +8911,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Login",
   data: function data() {
     return {
       email: null,
-      password: null
+      password: null,
+      errors: []
     };
-  },
-  mounted: function mounted() {
-    this.email = null;
   },
   methods: {
     authenticate: function authenticate() {
@@ -8942,16 +8947,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 3:
-                _context.next = 8;
+                _context.next = 9;
                 break;
 
               case 5:
                 _context.prev = 5;
                 _context.t0 = _context["catch"](0);
-                console.log(_context.t0);
-
-              case 8:
-                console.log('Hi');
+                console.log((0,_utils__WEBPACK_IMPORTED_MODULE_2__.gqlErrors)(_context.t0));
+                _this.errors = (0,_utils__WEBPACK_IMPORTED_MODULE_2__.gqlErrors)(_context.t0);
 
               case 9:
               case "end":
@@ -9339,7 +9342,7 @@ var apolloClient = new apollo_boost__WEBPACK_IMPORTED_MODULE_2__["default"]({
   },
   credentials: 'include',
   onError: function onError(err) {
-    return console.log('Global Error Handler!');
+    return console.log('global Error!');
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vue_apollo__WEBPACK_IMPORTED_MODULE_0__["default"]({
@@ -9434,6 +9437,27 @@ var routes = [{
   routes: routes,
   mode: "history"
 }));
+
+/***/ }),
+
+/***/ "./resources/js/utils.js":
+/*!*******************************!*\
+  !*** ./resources/js/utils.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "gqlErrors": () => (/* binding */ gqlErrors)
+/* harmony export */ });
+function gqlErrors(err) {
+  return ((err === null || err === void 0 ? void 0 : err.graphQLErrors) || []).map(function (error) {
+    return {
+      message: error.message
+    };
+  });
+}
 
 /***/ }),
 
@@ -20910,6 +20934,26 @@ var render = function () {
             "div",
             { staticClass: "w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-10" },
             [
+              _vm.errors.length
+                ? _c(
+                    "div",
+                    {
+                      staticClass:
+                        "mb-3 p-2 bg-red-600 text-gray-100 rounded-sm text-sm text-center ",
+                    },
+                    _vm._l(_vm.errors, function (error, index) {
+                      return _c("div", { key: index }, [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(error.message) +
+                            "\n                "
+                        ),
+                      ])
+                    }),
+                    0
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c(
                 "div",
                 {
