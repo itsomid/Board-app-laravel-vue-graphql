@@ -9452,10 +9452,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "gqlErrors": () => (/* binding */ gqlErrors)
 /* harmony export */ });
 function gqlErrors(err) {
-  return ((err === null || err === void 0 ? void 0 : err.graphQLErrors) || []).map(function (error) {
+  var hasInternal = function hasInternal(errors) {
+    return errors.some(function (e) {
+      return e.internal;
+    });
+  };
+
+  var replaceInternal = function replaceInternal(errors, err) {
+    return hasInternal(errors) ? errors.filter(function (e) {
+      return !e.internal;
+    }).concat(err) : errors;
+  };
+
+  return replaceInternal(((err === null || err === void 0 ? void 0 : err.graphQLErrors) || []).map(function (error) {
+    var _error$path;
+
     return {
-      message: error.message
+      message: error.message,
+      internal: Boolean(!(error !== null && error !== void 0 && (_error$path = error.path) !== null && _error$path !== void 0 && _error$path.length))
     };
+  }), {
+    message: 'Something bad happen'
   });
 }
 
