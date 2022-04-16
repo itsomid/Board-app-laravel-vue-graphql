@@ -36,9 +36,6 @@ export default {
             cardTitle: this.card.title
         }
     },
-    mounted() {
-
-    },
     methods: {
         cardDelete() {
             this.$apollo.mutate({

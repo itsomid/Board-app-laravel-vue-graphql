@@ -39,7 +39,6 @@ import List from "./components/List"
 import BoardQuery from './graphql/BoardWithListsAndCards.gql'
 import {EVENT_CARD_ADDED, EVENT_CARD_DELETED, EVENT_CARD_UPDATE} from "./constants";
 
-
 export default {
     components: {List},
     apollo: {

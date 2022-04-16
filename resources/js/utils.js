@@ -1,5 +1,6 @@
 export function gqlErrors(err) {
     const hasInternal = errors => errors.some(e => e.internal)
+
     const replaceInternal = (errors, err) =>
         hasInternal(errors) ? errors.filter(e => !e.internal).concat(err) : errors
 
