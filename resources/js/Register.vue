@@ -6,11 +6,7 @@
                 <span>Laravello</span>
             </div>
             <div class="w-full sm:shadow-xl sm:bg-white sm:py-8 sm:px-12">
-                <div v-if="errors.length" class="mb-3 p-2 bg-red-600 text-gray-100 rounded-sm text-sm text-center ">
-                    <div v-for="(err, index) in errors" :key="index">
-                        {{err.message}}
-                    </div>
-                </div>
+                <Errors :errors="errors"></Errors>
                 <div class="w-full text-center text-gray-600 font-bold mb-8">Signup for your account</div>
                 <form @submit.prevent="register">
                     <div class="w-full mb-4">
@@ -53,8 +49,10 @@
 <script>
 import Register from './graphql/register.gql'
 import {gqlErrors} from "./utils";
+import Errors from "./components/Errors";
 export default {
     name: "Register",
+    components: {Errors},
     data(){
         return{
             email: null,
@@ -65,7 +63,6 @@ export default {
     },
     methods:{
        async register(){
-            // console.log('register BUTTON Cliiicked!!!')
             try{
                await this.$apollo.mutate({
                     mutation: Register,
@@ -74,12 +71,12 @@ export default {
                         password: this.password,
                         name: this.name
                     }
-                })
+                });
+                this.$router.push({name:'board'})
             }catch (err){
                 console.log(gqlErrors(err))
                 this.errors = gqlErrors(err)
             }
-
         }
     }
 
